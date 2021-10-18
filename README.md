@@ -1,7 +1,7 @@
 [![Discord][discord-shield]][discord-url]
 
 ## :pushpin: About this Script
-<img src="https://dough.land/u/bor6xDKhil.png" alt="product-screenshot" width="512" height="256">
+![doughNamechanger-banner|512x256](https://dough.land/u/bor6xDKhil.png)
 
 Simple Ui-based script for players to change name (firstname + lastname)
 
