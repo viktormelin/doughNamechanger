@@ -19,13 +19,13 @@ Citizen.CreateThread(function()
     if Config.EnableBlip then 
         for i=1, #Config.Locations, 1 do 
             local blip = AddBlipForCoord(Config.Locations[i])
-            SetBlipSprite(blip, 480)
+            SetBlipSprite(blip, Config.BlipSprite)
             SetBlipDisplay(blip, 4)
-            SetBlipScale(blip, 0.65)
-            SetBlipColour(blip, 17)
+            SetBlipScale(blip, Config.BlipScale)
+            SetBlipColour(blip, Config.BlipColour)
             SetBlipAsShortRange(blip, true)
             BeginTextCommandSetBlipName('STRING')
-            AddTextComponentSubstringPlayerName('Passport Agency')
+            AddTextComponentSubstringPlayerName(Config.BlipLabel)
             EndTextCommandSetBlipName(blip)
         end
     end
