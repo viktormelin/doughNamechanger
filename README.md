@@ -19,6 +19,7 @@ Easily add more locations and change cost
 ```sh
 Config.Cost = 5000
 Config.Account = 'bank'
+Config.EnableLogs = true
 
 Config.EnableBlip = true
 Config.BlipSprite = 480
