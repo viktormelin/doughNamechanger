@@ -1,6 +1,7 @@
 Config = {}
 Config.Cost = 5000
 Config.Account = 'bank'
+Config.EnableLogs = true
 
 Config.EnableBlip = true
 Config.BlipSprite = 480
