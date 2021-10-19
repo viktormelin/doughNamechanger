@@ -6,18 +6,26 @@
 Simple Ui-based script for players to change name (firstname + lastname)
 
 ## :ledger: Requirements
-* ESX (version shouldn't matter)
+* ESX (mysql-async) or QBCore (oxmysql)
 * Do not change the name of the resource if you do not know how to edit the rest of the files
 
 ## :clipboard: Installation
 1. Drag and Drop `doughNamechanger` into your resources folder
 2. Add `ensure doughNamechanger` to your server.cfg
 
+#### Change from QBCore to ESX
+1. Script is by default set to use QBCore, if you wish to change it to use ESX edit `shared/config.lua` and set `Config.ESX = true`
+2. Go into `fxmanifest.lua` and comment out the `@qb-core/import.lua` and uncomment the 3 files in `server_scripts {}`
+
 ## :file_folder: Important Files
 ### config.lua
 Easily add more locations and change cost
 ```sh
-Config.Cost = 5000
+Config = {}
+
+Config.ESX = false
+
+Config.Cost = 500
 Config.Account = 'bank'
 Config.EnableLogs = true
 
@@ -28,7 +36,21 @@ Config.BlipScale = 0.65
 Config.BlipLabel = 'Passport Agency'
 
 Config.Locations = {
-    vector3(297.9539, -592.4486, 43.2841)
+    vector3(299.6404, -579.6099, 43.2608)
+}
+```
+### fxmanifest.lua
+```sh
+shared_scripts {
+    '@qb-core/import.lua', -- ENABLE / DISABLE IF YOU USE QB-CORE
+    'shared/config.lua'
+}
+
+server_scripts {
+	-- '@async/async.lua',
+	-- '@mysql-async/lib/MySQL.lua',
+    -- '@es_extended/locale.lua',
+    'server/main.lua',
 }
 ```
 
