@@ -5,7 +5,7 @@ else
     local QBCore = exports['qb-core']:GetCoreObject()
 end
 
-local DiscordWebhook = 'https://discord.com/api/webhooks/899383511235055616/MUqdxMt3OCQbWGv3A_Kvoy-RhFQidIGr6Ewgrp9qoKkCXJyMKaomVlXVkm0VZB8Go9kA'
+local DiscordWebhook = ''
 
 RegisterNetEvent('doughNamechanger:ChangeName')
 AddEventHandler('doughNamechanger:ChangeName', function(firstname, lastname)
