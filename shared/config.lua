@@ -1,5 +1,8 @@
 Config = {}
-Config.Cost = 5000
+
+Config.ESX = false
+
+Config.Cost = 500
 Config.Account = 'bank'
 Config.EnableLogs = true
 
@@ -10,5 +13,5 @@ Config.BlipScale = 0.65
 Config.BlipLabel = 'Passport Agency'
 
 Config.Locations = {
-    vector3(297.9539, -592.4486, 43.2841)
+    vector3(299.6404, -579.6099, 43.2608)
 }

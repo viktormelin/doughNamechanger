@@ -1,19 +1,30 @@
-ESX = nil
-Citizen.CreateThread(function()
-	while ESX == nil do
-		TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-		Citizen.Wait(0)
-	end
+if Config.ESX then 
+    ESX = nil
+    Citizen.CreateThread(function()
+        while ESX == nil do
+            TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+            Citizen.Wait(0)
+        end
 
-	while ESX.GetPlayerData().job == nil do
-		Citizen.Wait(10)
-	end
-end)
+        while ESX.GetPlayerData().job == nil do
+            Citizen.Wait(10)
+        end
+    end)
 
-RegisterNetEvent('esx:playerLoaded')
-AddEventHandler('esx:playerLoaded', function (xPlayer)
-	ESX.PlayerData = xPlayer
-end)
+    RegisterNetEvent('esx:playerLoaded')
+    AddEventHandler('esx:playerLoaded', function (xPlayer)
+        ESX.PlayerData = xPlayer
+    end)
+else
+    local QBCore = exports['qb-core']:GetCoreObject()
+    local PlayerData = {}
+
+    AddEventHandler('QBCore:Client:OnPlayerLoaded', function()
+        PlayerData = QBCore.Functions.GetPlayerData()
+    end)
+end
+
+
 
 Citizen.CreateThread(function()
     if Config.EnableBlip then 
@@ -57,15 +68,30 @@ Citizen.CreateThread(function()
 end)
 
 OpenNameChanger = function()
-    ESX.TriggerServerCallback('doughNamechanger:FetchName', function(firstname, lastname)
-        SetTimecycleModifier('hud_def_blur')
-        SetNuiFocus(true, true)
-        SendNUIMessage({
-            display = true,
-            firstname = firstname,
-            lastname = lastname,
-        })
-    end)
+    if Config.ESX then 
+        ESX.TriggerServerCallback('doughNamechanger:FetchName', function(firstname, lastname)
+            SetTimecycleModifier('hud_def_blur')
+            SetNuiFocus(true, true)
+            SendNUIMessage({
+                display = true,
+                firstname = firstname,
+                lastname = lastname,
+            })
+        end)
+    else
+        QBCore.Functions.TriggerCallback('doughNamechanger:FetchName', function(result)
+            local result = json.decode(result)
+            local firstname = result.firstname
+            local lastname = result.lastname
+            SetTimecycleModifier('hud_def_blur')
+            SetNuiFocus(true, true)
+            SendNUIMessage({
+                display = true,
+                firstname = firstname,
+                lastname = lastname,
+            })
+        end)
+    end
 end
 
 RegisterNUICallback('ChangeName', function(data)
@@ -74,7 +100,11 @@ RegisterNUICallback('ChangeName', function(data)
     if firstname and lastname then 
         TriggerServerEvent('doughNamechanger:ChangeName', firstname, lastname)
     else
-        ESX.ShowNotification('There was a error with your inputed values')
+        if Config.ESX then 
+            ESX.ShowNotification('There was a error with your inputed values')
+        else
+            TriggerEvent('QBCore:Notify', 'There was a error with your inputed values')
+        end
     end
 end)
 
