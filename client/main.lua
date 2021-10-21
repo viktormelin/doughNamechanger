@@ -42,30 +42,80 @@ Citizen.CreateThread(function()
     end
 end)
 
-Citizen.CreateThread(function()
-    while true do 
-        Citizen.Wait(0)
-        local letSleep = true
-        local ped = PlayerPedId()
-        local coords = GetEntityCoords(ped)
-        for i=1, #Config.Locations, 1 do 
-            local distance = #(coords - Config.Locations[i])
-            if distance < 7 then 
-                letSleep = false
-                DrawMarker(2, Config.Locations[i].x, Config.Locations[i].y, Config.Locations[i].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 255, 255, 255, 222, false, false, false, true, false, false, false)
-                if distance < 2.5 then 
-                    Draw3DText(Config.Locations[i].x, Config.Locations[i].y, Config.Locations[i].z + 0.25, '~g~[E]~w~ - Open Namechanger')
-                    if IsControlJustReleased(0, 38) then 
-                        OpenNameChanger()
+
+if not Config.UseBTtarget then 
+    Citizen.CreateThread(function()
+        while true do 
+            Citizen.Wait(0)
+            local letSleep = true
+            local ped = PlayerPedId()
+            local coords = GetEntityCoords(ped)
+            for i=1, #Config.Locations, 1 do 
+                local distance = #(coords - Config.Locations[i])
+                if distance < 7 then 
+                    letSleep = false
+                    DrawMarker(2, Config.Locations[i].x, Config.Locations[i].y, Config.Locations[i].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.3, 0.2, 0.15, 255, 255, 255, 222, false, false, false, true, false, false, false)
+                    if distance < 2.5 then 
+                        Draw3DText(Config.Locations[i].x, Config.Locations[i].y, Config.Locations[i].z + 0.25, '~g~[E]~w~ - Open Namechanger')
+                        if IsControlJustReleased(0, 38) then 
+                            OpenNameChanger()
+                        end
                     end
                 end
             end
+            if letSleep then 
+                Citizen.Wait(1000)
+            end
         end
-        if letSleep then 
-            Citizen.Wait(1000)
+    end)
+end
+
+if Config.UseBTtarget then 
+    local coordonate = {
+        {Config.LocationNPC.x,Config.LocationNPC.y,Config.LocationNPC.z,"",Config.LocationNPC.heading,Config.LocationNPC.npchash,Config.LocationNPC.npcname},
+      }
+    Citizen.CreateThread(function()
+    
+        for _,v in pairs(coordonate) do
+          RequestModel(GetHashKey(v[7]))
+          while not HasModelLoaded(GetHashKey(v[7])) do
+            Wait(1)
+          end
+      
+          RequestAnimDict("mini@strip_club@idles@bouncer@base")
+          while not HasAnimDictLoaded("mini@strip_club@idles@bouncer@base") do
+            Wait(1)
+          end
+          ped =  CreatePed(4, v[6],v[1],v[2],v[3], 3374176, false, true)
+          SetEntityHeading(ped, v[5])
+          FreezeEntityPosition(ped, true)
+          SetEntityInvincible(ped, true)
+          SetBlockingOfNonTemporaryEvents(ped, true)
+          TaskPlayAnim(ped,"mini@strip_club@idles@bouncer@base","base", 8.0, 0.0, -1, 1, 0, 0, 0, 0)
         end
-    end
-end)
+      end)
+    local NPC = {
+        `cs_fbisuit_01`, -- Will have to be placed from config bt-target wont register if you put Config.LocationNPC.npcname in the ``.
+    }
+    
+    exports['bt-target']:AddTargetModel(NPC, {
+        options = {
+            {
+               
+                event = "doughNameChanger:OpenNameChanger",
+                icon = 'fas fa-dollar-sign',
+                label = 'Change Name',
+            },
+        },
+        job = {'all'},
+        distance = 2.5
+    })
+    
+    RegisterNetEvent("doughNameChanger:OpenNameChanger")
+    AddEventHandler("doughNameChanger:OpenNameChanger", function()
+        OpenNameChanger()
+    end)
+end
 
 OpenNameChanger = function()
     if Config.ESX then 
