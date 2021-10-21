@@ -17,6 +17,11 @@ Simple Ui-based script for players to change name (firstname + lastname)
 1. Script is by default set to use QBCore, if you wish to change it to use ESX edit `shared/config.lua` and set `Config.ESX = true`
 2. Go into `fxmanifest.lua` and comment out the `@qb-core/import.lua` and uncomment the 3 files in `server_scripts {}`
 
+#### Use BT-Target (https://forum.cfx.re/u/skellykat_gaming/summary)
+1. Uncomment the lines in `fxmanifest.lua` that are marked
+2. Change `Config.UseBTtarget = true`
+3. Success! Should work now!
+
 ## :file_folder: Important Files
 ### config.lua
 Easily add more locations and change cost
@@ -53,6 +58,7 @@ Config.Locations = {
 --     npchash = 0x585C0B52,
 -- }
 ```
+
 ### fxmanifest.lua
 ```sh
 shared_scripts {
